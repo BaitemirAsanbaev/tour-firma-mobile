@@ -42,8 +42,18 @@ class LoginActivity : AppCompatActivity() {
                     userEmail.text.clear()
                     userPassword.text.clear()
 
-                    val intent = Intent(this, ToursActivity::class.java)
-                    startActivity(intent)
+                    val userIntent = Intent(this, ToursActivity::class.java)
+                    val adminIntent = Intent(this, CreateTourActivity::class.java)
+                    val atIndex = email.indexOf('@')
+                    val domain = email.substring(atIndex + 1)
+                    val dotIndex = domain.indexOf('.')
+                    val provider = domain.substring(0, dotIndex)
+                    if(provider=="admin"){
+                        startActivity(adminIntent)
+                    }
+                    else{
+                        startActivity(userIntent)
+                    }
                 }
                 else{
                     Toast.makeText(this, "Error while login", Toast.LENGTH_LONG).show()

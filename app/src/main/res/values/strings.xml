@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">tour_firma</string>
+    <string-array name="spinner_items">
+        <item>beach</item>
+        <item>europe</item>
+        <item>lights</item>
+        <item>safari</item>
+        <item>mountain</item>
+    </string-array>
 </resources>

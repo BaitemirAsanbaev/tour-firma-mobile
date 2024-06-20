@@ -40,10 +40,10 @@ class ToursAdapter(
         holder.price.text = tours[position].price.toString()
 
         val imageId = context.resources.getIdentifier(
-                tours[position].image,
-                "drawable",
-                context.packageName
-                )
+            tours[position].image,
+            "drawable",
+            context.packageName
+        )
 
         holder.image.setImageResource(imageId)
 
