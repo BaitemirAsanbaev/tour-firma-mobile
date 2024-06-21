@@ -17,7 +17,7 @@ class LoginActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_login)
 
-        val goRegister:TextView = findViewById(R.id.go_register)
+        val goRegister: TextView = findViewById(R.id.go_register)
         goRegister.setOnClickListener{
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
@@ -26,21 +26,25 @@ class LoginActivity : AppCompatActivity() {
         val userPassword: EditText = findViewById(R.id.password_inp_login)
         val button: Button = findViewById(R.id.login_button)
 
-
         button.setOnClickListener{
             val email = userEmail.text.toString().trim()
             val pass = userPassword.text.toString().trim()
 
-            if (email=="" || pass ==""){
+            if (email.isEmpty() || pass.isEmpty()) {
                 Toast.makeText(this, "Enter all fields", Toast.LENGTH_LONG).show()
-            }
-            else{
+            } else {
                 val db = DBHelper(this, null)
                 val isAuth = db.getUser(email, pass)
-                if (isAuth){
+                if (isAuth) {
                     Toast.makeText(this, "You have logged in successfully", Toast.LENGTH_LONG).show()
                     userEmail.text.clear()
                     userPassword.text.clear()
+
+                    val sharedPref = getSharedPreferences("user_prefs", MODE_PRIVATE)
+                    with(sharedPref.edit()) {
+                        putBoolean("is_logged_in", true)
+                        apply()
+                    }
 
                     val userIntent = Intent(this, ToursActivity::class.java)
                     val adminIntent = Intent(this, CreateTourActivity::class.java)
@@ -50,16 +54,12 @@ class LoginActivity : AppCompatActivity() {
                     val provider = domain.substring(0, dotIndex)
                     if(provider=="admin"){
                         startActivity(adminIntent)
-                    }
-                    else{
+                    } else {
                         startActivity(userIntent)
                     }
-                }
-                else{
+                } else {
                     Toast.makeText(this, "Error while login", Toast.LENGTH_LONG).show()
-
                 }
-
             }
         }
     }
