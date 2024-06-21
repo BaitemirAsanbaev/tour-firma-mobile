@@ -3,6 +3,7 @@ package com.example.tour_firma
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -33,32 +34,37 @@ class LoginActivity : AppCompatActivity() {
             if (email.isEmpty() || pass.isEmpty()) {
                 Toast.makeText(this, "Enter all fields", Toast.LENGTH_LONG).show()
             } else {
-                val db = DBHelper(this, null)
-                val isAuth = db.getUser(email, pass)
-                if (isAuth) {
-                    Toast.makeText(this, "You have logged in successfully", Toast.LENGTH_LONG).show()
-                    userEmail.text.clear()
-                    userPassword.text.clear()
+                try {
+                    val db = DBHelper(this, null)
+                    val isAuth = db.getUser(email, pass)
+                    if (isAuth) {
+                        Toast.makeText(this, "You have logged in successfully", Toast.LENGTH_LONG).show()
+                        userEmail.text.clear()
+                        userPassword.text.clear()
 
-                    val sharedPref = getSharedPreferences("user_prefs", MODE_PRIVATE)
-                    with(sharedPref.edit()) {
-                        putBoolean("is_logged_in", true)
-                        apply()
-                    }
+                        val sharedPref = getSharedPreferences("user_prefs", MODE_PRIVATE)
+                        with(sharedPref.edit()) {
+                            putBoolean("is_logged_in", true)
+                            apply()
+                        }
 
-                    val userIntent = Intent(this, ToursActivity::class.java)
-                    val adminIntent = Intent(this, CreateTourActivity::class.java)
-                    val atIndex = email.indexOf('@')
-                    val domain = email.substring(atIndex + 1)
-                    val dotIndex = domain.indexOf('.')
-                    val provider = domain.substring(0, dotIndex)
-                    if(provider=="admin"){
-                        startActivity(adminIntent)
+                        val userIntent = Intent(this, ToursActivity::class.java)
+                        val adminIntent = Intent(this, CreateTourActivity::class.java)
+                        val atIndex = email.indexOf('@')
+                        val domain = email.substring(atIndex + 1)
+                        val dotIndex = domain.indexOf('.')
+                        val provider = domain.substring(0, dotIndex)
+                        if(provider=="admin"){
+                            startActivity(adminIntent)
+                        } else {
+                            startActivity(userIntent)
+                        }
                     } else {
-                        startActivity(userIntent)
+                        Toast.makeText(this, "Error while login", Toast.LENGTH_LONG).show()
                     }
-                } else {
-                    Toast.makeText(this, "Error while login", Toast.LENGTH_LONG).show()
+                } catch (e: Exception) {
+                    Log.e("LoginActivity", "Error during login", e)
+                    Toast.makeText(this, "An error occurred: ${e.message}", Toast.LENGTH_LONG).show()
                 }
             }
         }

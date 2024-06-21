@@ -7,6 +7,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 
 class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
     SQLiteOpenHelper(context, "tour_firma", factory, 1) {
@@ -33,8 +34,8 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
 
         val bookingsQ = buildString {
             append("CREATE TABLE bookings (")
-            append("'id' INTEGER PRIMARY KEY AUTOINCREMENT, ")
-            append("'tour' STRING,")
+            append("'id' INTEGER PRIMARY KEY AUTOINCREMENT,")
+            append("'tour' TEXT)")
         }
 
         db?.execSQL(usersQ)
@@ -62,8 +63,8 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
     @SuppressLint("Recycle")
     fun getUser(email: String, pass: String): Boolean {
         val db = this.readableDatabase
-        val result =
-            db.rawQuery("SELECT * FROM users WHERE email = '$email' AND pass = '$pass'", null)
+        val query = "SELECT * FROM users WHERE email = ? AND pass = ?"
+        val result = db.rawQuery(query, arrayOf(email, pass))
         return result.moveToFirst()
     }
 
@@ -82,6 +83,7 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         db.insert("tours", null, values)
         db.close()
     }
+
     fun deleteTour(id: Int) {
         val db = this.writableDatabase
         db.execSQL("DELETE FROM tours WHERE id = $id")
@@ -98,30 +100,21 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         try {
             cursor = db.rawQuery(query, null)
         } catch (e: SQLiteException) {
-            // Exception handling if needed
+            Log.e("DBHelper", "Error reading tours", e)
             db.close()
             return tours
         }
 
-        var id: Int
-        var image: String
-        var title: String
-        var desc: String
-        var info: String
-        var price: Int
-        var destination: String
-        var departure: String
-
         if (cursor.moveToFirst()) {
             do {
-                id = cursor.getInt(cursor.getColumnIndex("id"))
-                image = cursor.getString(cursor.getColumnIndex("image"))
-                title = cursor.getString(cursor.getColumnIndex("title"))
-                desc = cursor.getString(cursor.getColumnIndex("desc"))
-                info = cursor.getString(cursor.getColumnIndex("info"))
-                price = cursor.getInt(cursor.getColumnIndex("price"))
-                destination = cursor.getString(cursor.getColumnIndex("destination"))
-                departure = cursor.getString(cursor.getColumnIndex("departure"))
+                val id = cursor.getInt(cursor.getColumnIndex("id"))
+                val image = cursor.getString(cursor.getColumnIndex("image"))
+                val title = cursor.getString(cursor.getColumnIndex("title"))
+                val desc = cursor.getString(cursor.getColumnIndex("desc"))
+                val info = cursor.getString(cursor.getColumnIndex("info"))
+                val price = cursor.getInt(cursor.getColumnIndex("price"))
+                val destination = cursor.getString(cursor.getColumnIndex("destination"))
+                val departure = cursor.getString(cursor.getColumnIndex("departure"))
 
                 val tour = Tour(id, image, title, desc, info, price, destination, departure)
                 tours.add(tour)
@@ -131,8 +124,8 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         cursor.close()
         db.close()
         return tours
-
     }
+
     fun addBooking(booking: Booking) {
         val values = ContentValues().apply {
             put("tour", booking.tour)
@@ -142,6 +135,7 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         db.insert("bookings", null, values)
         db.close()
     }
+
     @SuppressLint("Range")
     fun getAllBookings(): List<Booking> {
         val bookings = mutableListOf<Booking>()
@@ -152,18 +146,15 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         try {
             cursor = db.rawQuery(query, null)
         } catch (e: SQLiteException) {
-            // Exception handling if needed
+            Log.e("DBHelper", "Error reading bookings", e)
             db.close()
             return bookings
         }
 
-        var id: Int
-        var tour: String
-
         if (cursor.moveToFirst()) {
             do {
-                id = cursor.getInt(cursor.getColumnIndex("id"))
-                tour = cursor.getString(cursor.getColumnIndex("tour"))
+                val id = cursor.getInt(cursor.getColumnIndex("id"))
+                val tour = cursor.getString(cursor.getColumnIndex("tour"))
 
                 val booking = Booking(id, tour)
                 bookings.add(booking)
@@ -173,8 +164,5 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         cursor.close()
         db.close()
         return bookings
-
     }
-
-
 }
