@@ -1,7 +1,9 @@
 package com.example.tour_firma
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -19,8 +21,12 @@ class BookinsActivity : AppCompatActivity() {
         val dbHelper = DBHelper(this, null)
         val bookingsList: RecyclerView = findViewById(R.id.bookings_list)
         val bookings = dbHelper.getAllBookings()
-
+        val btn:Button = findViewById(R.id.go_tours)
         bookingsList.layoutManager = LinearLayoutManager(this)
         bookingsList.adapter = BookingsAdapter(bookings, this)
+        btn.setOnClickListener{
+            val intent = Intent(this, ToursActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
