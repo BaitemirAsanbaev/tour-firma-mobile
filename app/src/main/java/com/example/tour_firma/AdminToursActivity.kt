@@ -14,10 +14,10 @@ class AdminToursActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_tours)
+        setContentView(R.layout.activity_admin_tours)
 
         val dbHelper = DBHelper(this, null)
-        val toursList: RecyclerView = findViewById(R.id.tours_list)
+        val toursList: RecyclerView = findViewById(R.id.tours_list_admin)
         val tours = dbHelper.getAllTours()
         val buttonGoCreate:Button = findViewById(R.id.go_create)
 

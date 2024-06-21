@@ -54,6 +54,7 @@ class CreateTourActivity : AppCompatActivity() {
 
 
         buttonAllTours.setOnClickListener{
+            Toast.makeText(this, "navigate to admin tours", Toast.LENGTH_SHORT).show()
             val intent = Intent(this, AdminToursActivity::class.java)
             startActivity(intent)
         }

@@ -34,10 +34,7 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         val bookingsQ = buildString {
             append("CREATE TABLE bookings (")
             append("'id' INTEGER PRIMARY KEY AUTOINCREMENT, ")
-            append("'user' INTEGER,")
-            append("'tour' INTEGER,")
-            append("FOREIGN KEY(user) REFERENCES users(id),")
-            append("FOREIGN KEY(tour) REFERENCES tours(id))")
+            append("'tour' STRING,")
         }
 
         db?.execSQL(usersQ)
@@ -87,9 +84,10 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
     }
     fun deleteTour(id: Int) {
         val db = this.writableDatabase
-        db.execSQL("DELETE * FROM tours WHERE (id=$id)")
+        db.execSQL("DELETE FROM tours WHERE id = $id")
         db.close()
     }
+
     @SuppressLint("Range")
     fun getAllTours(): List<Tour> {
         val tours = mutableListOf<Tour>()
@@ -133,8 +131,50 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         cursor.close()
         db.close()
         return tours
-    }
 
+    }
+    fun addBooking(booking: Booking) {
+        val values = ContentValues().apply {
+            put("tour", booking.tour)
+        }
+
+        val db = this.writableDatabase
+        db.insert("bookings", null, values)
+        db.close()
+    }
+    @SuppressLint("Range")
+    fun getAllBookings(): List<Booking> {
+        val bookings = mutableListOf<Booking>()
+        val query = "SELECT * FROM bookings"
+        val db = this.readableDatabase
+        val cursor: Cursor?
+
+        try {
+            cursor = db.rawQuery(query, null)
+        } catch (e: SQLiteException) {
+            // Exception handling if needed
+            db.close()
+            return bookings
+        }
+
+        var id: Int
+        var tour: String
+
+        if (cursor.moveToFirst()) {
+            do {
+                id = cursor.getInt(cursor.getColumnIndex("id"))
+                tour = cursor.getString(cursor.getColumnIndex("tour"))
+
+                val booking = Booking(id, tour)
+                bookings.add(booking)
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        db.close()
+        return bookings
+
+    }
 
 
 }

@@ -51,6 +51,10 @@ class ToursAdapter(
             val intent = Intent(context, TourDetailsActivity::class.java)
             intent.putExtra("title", tours[position].title)
             intent.putExtra("desc", tours[position].desc)
+            intent.putExtra("info", tours[position].info)
+            intent.putExtra("dep", tours[position].departure)
+            intent.putExtra("des", tours[position].destination)
+            intent.putExtra("price", tours[position].price)
             context.startActivity(intent)
         }
     }

@@ -4,32 +4,58 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/yellow"
+    android:orientation="vertical"
     android:padding="30dp"
     tools:context=".TourDetailsActivity">
+
     <TextView
         android:id="@+id/tour_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Rome tour"
         android:textColor="@color/black"
         android:textSize="20sp"
-        android:textStyle="bold"
-        android:text="Rome tour" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tour_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Welcome to Italy,  we will explore collissium"
+        android:textColor="@color/grey"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/tour_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Welcome to Italy,  we will explore collissium Welcome to Italy,  we will explore collissium Welcome to Italy,  we will explore collissium Welcome to Italy,  we will explore collissium Welcome to Italy,  we will explore collissium"
         android:textColor="@color/black"
-        android:text="Welcome to Italy,  we will explore collissium" />
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/dest_dep"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="London - Rome"
+        android:textColor="@color/black" />
+    <TextView
+        android:id="@+id/tour_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        android:text="1000$"
+        android:textColor="@color/black" />
+
     <Button
         android:id="@+id/tour_button"
         android:layout_width="200dp"
-        android:layout_gravity="center"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textStyle="bold"
+        android:layout_gravity="center"
         android:backgroundTint="@color/grey"
-        android:text="Book" />
+        android:text="Book"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
 </LinearLayout>

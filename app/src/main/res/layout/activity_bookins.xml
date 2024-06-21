@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/bookings"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/yellow"
-    tools:context=".ToursActivity">
+    tools:context=".BookinsActivity">
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/booking"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
@@ -17,25 +17,11 @@
         android:layout_marginTop="30dp"
         android:textSize="25sp"
         android:textStyle="bold"
-        android:text="Tours" />
-    <Button
-        android:id="@+id/go_bookings"
-        android:layout_width="220dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:backgroundTint="@color/grey"
-        android:textColor="@color/yellow"
-        android:text="My bookings" />
+        android:text="Bookings" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/tours_list"
+        android:id="@+id/bookings_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="20dp"
-
-
-        />
+        android:layout_height="match_parent" />
 
 </LinearLayout>

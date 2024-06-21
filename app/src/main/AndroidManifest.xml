@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Tour_firma">
         <activity
+            android:name=".BookinsActivity"
+            android:exported="false" />
+        <activity
             android:name=".AdminToursActivity"
             android:exported="false" />
         <activity
